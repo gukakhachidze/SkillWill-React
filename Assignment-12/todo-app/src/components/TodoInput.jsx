@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-export default function TodoInput({ addTodo }) {
+const TodoInput = React.memo(function TodoInput({ addTodo }) {
+  console.log('Render: TodoInput');
+
   const [text, setText] = useState('');
 
   const submit = () => {
@@ -19,4 +21,6 @@ export default function TodoInput({ addTodo }) {
       <button onClick={submit}>დამატება</button>
     </div>
   );
-}
+});
+
+export default TodoInput;

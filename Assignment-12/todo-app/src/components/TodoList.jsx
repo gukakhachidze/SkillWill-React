@@ -1,4 +1,8 @@
-export default function TodoList({ title, list, renderActions }) {
+import React from 'react';
+
+const TodoList = React.memo(function TodoList({ title, list, renderActions }) {
+  console.log('Render:', title);
+
   return (
     <div>
       <h2>{title}</h2>
@@ -17,4 +21,6 @@ export default function TodoList({ title, list, renderActions }) {
       ))}
     </div>
   );
-}
+});
+
+export default TodoList;
