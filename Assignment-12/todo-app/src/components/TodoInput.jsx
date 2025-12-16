@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
 const TodoInput = React.memo(function TodoInput({ addTodo }) {
-  console.log('Render: TodoInput');
-
   const [text, setText] = useState('');
 
   const submit = () => {
@@ -12,7 +10,7 @@ const TodoInput = React.memo(function TodoInput({ addTodo }) {
   };
 
   return (
-    <div>
+    <div className="input-wrapper">
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}

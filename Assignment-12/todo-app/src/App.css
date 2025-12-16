@@ -40,3 +40,92 @@
 .read-the-docs {
   color: #888;
 } */
+/* ===== App Container ===== */
+.app {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  width: 900px;
+  max-width: 95%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Columns Wrapper ===== */
+.columns {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+/* ===== Column ===== */
+.column {
+  flex: 1;
+  background: #f7f8fc;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+/* ===== Titles ===== */
+.column h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #4b4b9d;
+}
+
+/* ===== Todo Item ===== */
+.todo-item {
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ===== Buttons ===== */
+button {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+.btn-done {
+  background: #38a169;
+  color: white;
+}
+
+.btn-back {
+  background: #3182ce;
+  color: white;
+}
+
+.btn-delete {
+  background: #e53e3e;
+  color: white;
+}
+
+/* ===== Input ===== */
+.input-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.input-wrapper input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.input-wrapper button {
+  background: #805ad5;
+  color: white;
+}
