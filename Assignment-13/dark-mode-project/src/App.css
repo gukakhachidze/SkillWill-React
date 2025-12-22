@@ -1,0 +1,23 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.app.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.app.dark {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+button {
+  padding: 10px 16px;
+  cursor: pointer;
+}
