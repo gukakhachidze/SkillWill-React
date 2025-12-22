@@ -4,7 +4,8 @@ import TodoInput from './components/TodoInput';
 import TodoList from './components/TodoList';
 
 const initialState = {
-  todos: [],
+  todo: [],
+  progress: [],
   done: [],
 };
 
@@ -13,37 +14,26 @@ function reducer(state, action) {
     case 'ADD_TODO':
       return {
         ...state,
-        todos: [
-          ...state.todos,
-          { id: crypto.randomUUID(), text: action.payload },
-        ],
+        todo: [...state.todo, { id: crypto.randomUUID(), text: action.payload }],
       };
 
-    case 'FINISH_TODO': {
-      const item = state.todos.find((t) => t.id === action.payload);
+    case 'MOVE': {
+      const { from, to, id } = action.payload;
+      const item = state[from].find((t) => t.id === id);
       if (!item) return state;
 
       return {
-        todos: state.todos.filter((t) => t.id !== action.payload),
-        done: [...state.done, item],
+        ...state,
+        [from]: state[from].filter((t) => t.id !== id),
+        [to]: [...state[to], item],
       };
     }
 
-    case 'DELETE_DONE':
+    case 'DELETE':
       return {
         ...state,
         done: state.done.filter((t) => t.id !== action.payload),
       };
-
-    case 'MOVE_BACK': {
-      const item = state.done.find((t) => t.id === action.payload);
-      if (!item) return state;
-
-      return {
-        todos: [...state.todos, item],
-        done: state.done.filter((t) => t.id !== action.payload),
-      };
-    }
 
     default:
       return state;
@@ -53,48 +43,14 @@ function reducer(state, action) {
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const addTodo = useCallback(
-    (text) => dispatch({ type: 'ADD_TODO', payload: text }),
+  const addTodo = useCallback((text) => dispatch({ type: 'ADD_TODO', payload: text }), []);
+
+  const move = useCallback(
+    (from, to, id) => dispatch({ type: 'MOVE', payload: { from, to, id } }),
     []
   );
 
-  const finishTodo = useCallback(
-    (id) => dispatch({ type: 'FINISH_TODO', payload: id }),
-    []
-  );
-
-  const deleteDone = useCallback(
-    (id) => dispatch({ type: 'DELETE_DONE', payload: id }),
-    []
-  );
-
-  const moveBack = useCallback(
-    (id) => dispatch({ type: 'MOVE_BACK', payload: id }),
-    []
-  );
-
-  const renderTodoActions = useCallback(
-    (id) => (
-      <button className="btn-done" onClick={() => finishTodo(id)}>
-        დასრულება
-      </button>
-    ),
-    [finishTodo]
-  );
-
-  const renderDoneActions = useCallback(
-    (id) => (
-      <>
-        <button className="btn-back" onClick={() => moveBack(id)}>
-          დაბრუნება
-        </button>
-        <button className="btn-delete" onClick={() => deleteDone(id)}>
-          წაშლა
-        </button>
-      </>
-    ),
-    [moveBack, deleteDone]
-  );
+  const deleteDone = useCallback((id) => dispatch({ type: 'DELETE', payload: id }), []);
 
   return (
     <div className="app">
@@ -103,14 +59,57 @@ export default function App() {
       <div className="columns">
         <TodoList
           title="To Do"
-          list={state.todos}
-          renderActions={renderTodoActions}
+          list={state.todo}
+          renderActions={(id) => (
+            <button
+              className="btn-progress"
+              onClick={() => move('todo', 'progress', id)}
+            >
+              In Progress
+            </button>
+          )}
+        />
+
+        <TodoList
+          title="In Progress"
+          list={state.progress}
+          renderActions={(id) => (
+            <>
+              <button
+                className="btn-back"
+                onClick={() => move('progress', 'todo', id)}
+              >
+                უკან
+              </button>
+              <button
+                className="btn-done"
+                onClick={() => move('progress', 'done', id)}
+              >
+                Done
+              </button>
+            </>
+          )}
         />
 
         <TodoList
           title="Done"
           list={state.done}
-          renderActions={renderDoneActions}
+          renderActions={(id) => (
+            <>
+              <button
+                className="btn-back"
+                onClick={() => move('done', 'progress', id)}
+              >
+                In Progress
+              </button>
+              <button
+                className="btn-delete"
+                onClick={() => deleteDone(id)}
+              >
+                წაშლა
+              </button>
+            </>
+          )}
         />
       </div>
     </div>

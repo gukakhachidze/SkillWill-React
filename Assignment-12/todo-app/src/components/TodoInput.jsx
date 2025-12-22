@@ -14,7 +14,7 @@ const TodoInput = React.memo(function TodoInput({ addTodo }) {
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="დავალება..."
+        placeholder="ახალი დავალება..."
       />
       <button onClick={submit}>დამატება</button>
     </div>
