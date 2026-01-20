@@ -1,7 +1,9 @@
-import { useReducer, useCallback } from 'react';
-import './App.css';
-import TodoInput from './components/TodoInput';
-import TodoList from './components/TodoList';
+import { useReducer, useCallback } from "react";
+import "./App.css";
+import TodoInput from "./components/TodoInput";
+import TodoList from "./components/TodoList";
+import Header from "./components/Header";
+import { useLanguage } from "./context/LanguageContext";
 
 const initialState = {
   todo: [],
@@ -11,14 +13,14 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'ADD_TODO':
+    case "ADD":
       return {
         ...state,
-        todo: [...state.todo, { id: crypto.randomUUID(), text: action.payload }],
+        todo: [...state.todo, { id: crypto.randomUUID(), text: action.text }],
       };
 
-    case 'MOVE': {
-      const { from, to, id } = action.payload;
+    case "MOVE": {
+      const { from, to, id } = action;
       const item = state[from].find((t) => t.id === id);
       if (!item) return state;
 
@@ -29,10 +31,10 @@ function reducer(state, action) {
       };
     }
 
-    case 'DELETE':
+    case "DELETE":
       return {
         ...state,
-        done: state.done.filter((t) => t.id !== action.payload),
+        done: state.done.filter((t) => t.id !== action.id),
       };
 
     default:
@@ -42,73 +44,47 @@ function reducer(state, action) {
 
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { t } = useLanguage();
 
-  const addTodo = useCallback((text) => dispatch({ type: 'ADD_TODO', payload: text }), []);
-
-  const move = useCallback(
-    (from, to, id) => dispatch({ type: 'MOVE', payload: { from, to, id } }),
-    []
-  );
-
-  const deleteDone = useCallback((id) => dispatch({ type: 'DELETE', payload: id }), []);
+  const addTodo = useCallback((text) => dispatch({ type: "ADD", text }), []);
 
   return (
     <div className="app">
+      <Header />
+
       <TodoInput addTodo={addTodo} />
 
       <div className="columns">
         <TodoList
-          title="To Do"
+          title={t("titleTodo")}
           list={state.todo}
           renderActions={(id) => (
-            <button
-              className="btn-progress"
-              onClick={() => move('todo', 'progress', id)}
-            >
-              In Progress
+            <button onClick={() => dispatch({ type: "MOVE", from: "todo", to: "progress", id })}>
+              {t("toProgress")}
             </button>
           )}
         />
 
         <TodoList
-          title="In Progress"
+          title={t("titleProgress")}
           list={state.progress}
           renderActions={(id) => (
             <>
-              <button
-                className="btn-back"
-                onClick={() => move('progress', 'todo', id)}
-              >
-                უკან
+              <button onClick={() => dispatch({ type: "MOVE", from: "progress", to: "todo", id })}>
+                {t("back")}
               </button>
-              <button
-                className="btn-done"
-                onClick={() => move('progress', 'done', id)}
-              >
-                Done
+              <button onClick={() => dispatch({ type: "MOVE", from: "progress", to: "done", id })}>
+                {t("done")}
               </button>
             </>
           )}
         />
 
         <TodoList
-          title="Done"
+          title={t("titleDone")}
           list={state.done}
           renderActions={(id) => (
-            <>
-              <button
-                className="btn-back"
-                onClick={() => move('done', 'progress', id)}
-              >
-                In Progress
-              </button>
-              <button
-                className="btn-delete"
-                onClick={() => deleteDone(id)}
-              >
-                წაშლა
-              </button>
-            </>
+            <button onClick={() => dispatch({ type: "DELETE", id })}>{t("delete")}</button>
           )}
         />
       </div>
