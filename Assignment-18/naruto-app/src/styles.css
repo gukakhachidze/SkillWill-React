@@ -1,0 +1,68 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #0f0f0f;
+  color: white;
+}
+
+/* NAVBAR */
+nav {
+  background: #111;
+  padding: 15px;
+  display: flex;
+  gap: 20px;
+  border-bottom: 3px solid crimson;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a.active {
+  color: orange;
+}
+
+/* PAGE */
+.container {
+  padding: 30px;
+}
+
+/* CARD */
+.card {
+  background: #1c1c1c;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border-left: 5px solid orange;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+/* BUTTON */
+button {
+  background: crimson;
+  border: none;
+  padding: 10px 15px;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+button:hover {
+  background: darkred;
+}
+
+/* INPUT */
+input {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 250px;
+  border-radius: 5px;
+  border: none;
+}
